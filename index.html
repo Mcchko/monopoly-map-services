@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Markers on Leaflet Map</title>
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -25,7 +26,7 @@
             align-items: center;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             width: 100%;
@@ -35,19 +36,19 @@
             overflow: hidden;
             margin-top: 20px;
         }
-        
+
         header {
             background: linear-gradient(to right, #2c5aa0, #4a7cc2);
             color: white;
             padding: 20px 30px;
             text-align: center;
         }
-        
+
         h1 {
             font-size: 28px;
             margin-bottom: 10px;
         }
-        
+
         .description {
             font-size: 16px;
             opacity: 0.9;
@@ -55,25 +56,25 @@
             margin: 0 auto;
             line-height: 1.5;
         }
-        
+
         .content {
             display: flex;
             flex-wrap: wrap;
         }
-        
+
         #map-container {
             flex: 3;
             min-height: 600px;
             padding: 20px;
         }
-        
+
         #map {
             height: 100%;
             width: 100%;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         #legend {
             flex: 1;
             min-width: 250px;
@@ -81,7 +82,7 @@
             background-color: #f9f9f9;
             border-left: 1px solid #eee;
         }
-        
+
         .legend-title {
             font-weight: 600;
             margin-bottom: 15px;
@@ -90,13 +91,13 @@
             border-bottom: 1px solid #ddd;
             padding-bottom: 10px;
         }
-        
+
         .legend-item {
             display: flex;
             align-items: center;
             margin-bottom: 12px;
         }
-        
+
         .legend-icon {
             width: 32px;
             height: 32px;
@@ -107,11 +108,11 @@
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         .legend-label {
             font-size: 14px;
         }
-        
+
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -120,7 +121,7 @@
             background-color: #f0f4f9;
             border-bottom: 1px solid #ddd;
         }
-        
+
         button {
             padding: 8px 15px;
             background: #2c5aa0;
@@ -131,11 +132,11 @@
             font-size: 14px;
             transition: background 0.3s;
         }
-        
+
         button:hover {
             background: #1e3d6f;
         }
-        
+
         .info-panel {
             padding: 15px 30px;
             background-color: #f9f9f9;
@@ -143,12 +144,12 @@
             font-size: 14px;
             color: #555;
         }
-        
+
         @media (max-width: 768px) {
             .content {
                 flex-direction: column;
             }
-            
+
             #legend {
                 border-left: none;
                 border-top: 1px solid #eee;
@@ -156,6 +157,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="content">
@@ -167,45 +169,45 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Parse URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const dataParam = urlParams.get('data');
-            
+
             // Default data if no parameters provided
             let mapData = {
                 tiles: "noLabelsLightTheme",
                 geoinfo: [
-                    {"USER":{"lat":22,"lng":114}},
-                    {"FOR_TEEN_ONLY":{"lat":22,"lng":114.01}},
-                    {"FOR_POOR_ONLY":{"lat":22.0,"lng":114.02}},
-                    {"FOR_ELDERLY_ONLY":{"lat":22.0,"lng":114.03}},
-                    {"FOR_ALL":{"lat":22.0,"lng":114.04}},
-                    {"CHECKPOINT":{"lat":22.1,"lng":114.0}},
-                    {"CHECKPOINT":{"lat":22.1,"lng":114.1}},
-                    {"CHECKPOINT":{"lat":22.1,"lng":114.2}},
-                    {"CHECKPOINT":{"lat":22.1,"lng":114.3}},
-                    {"CHECKPOINT":{"lat":22.1,"lng":114.4}},
-                    {"CHECKPOINT":{"lat":22.2,"lng":114.0}},
-                    {"CHECKPOINT":{"lat":22.2,"lng":114.1}},
-                    {"CHECKPOINT":{"lat":22.2,"lng":114.2}},
-                    {"CHECKPOINT":{"lat":22.2,"lng":114.3}},
-                    {"CHECKPOINT":{"lat":22.2,"lng":114.4}},
-                    {"CHECKPOINT":{"lat":22.3,"lng":114.0}},
-                    {"CHECKPOINT":{"lat":22.3,"lng":114.1}},
-                    {"CHECKPOINT_ACTIVE":{"lat":22.3,"lng":114.2}},
-                    {"CHECKPOINT":{"lat":22.3,"lng":114.3}},
-                    {"CHECKPOINT":{"lat":22.3,"lng":114.4}},
-                    {"CHECKPOINT":{"lat":22.4,"lng":114.0}},
-                    {"CHECKPOINT_ACTIVE":{"lat":22.4,"lng":114.1}},
-                    {"CHECKPOINT":{"lat":22.4,"lng":114.2}},
-                    {"CHECKPOINT":{"lat":22.4,"lng":114.3}},
-                    {"CHECKPOINT":{"lat":22.4,"lng":114.4}}
+                    { "USER": { "lat": 22, "lng": 114 } },
+                    { "FOR_TEEN_ONLY": { "lat": 22, "lng": 114.01 } },
+                    { "FOR_POOR_ONLY": { "lat": 22.0, "lng": 114.02 } },
+                    { "FOR_ELDERLY_ONLY": { "lat": 22.0, "lng": 114.03 } },
+                    { "FOR_ALL": { "lat": 22.0, "lng": 114.04 } },
+                    { "CHECKPOINT": { "lat": 22.1, "lng": 114.0 } },
+                    { "CHECKPOINT": { "lat": 22.1, "lng": 114.1 } },
+                    { "CHECKPOINT": { "lat": 22.1, "lng": 114.2 } },
+                    { "CHECKPOINT": { "lat": 22.1, "lng": 114.3 } },
+                    { "CHECKPOINT": { "lat": 22.1, "lng": 114.4 } },
+                    { "CHECKPOINT": { "lat": 22.2, "lng": 114.0 } },
+                    { "CHECKPOINT": { "lat": 22.2, "lng": 114.1 } },
+                    { "CHECKPOINT": { "lat": 22.2, "lng": 114.2 } },
+                    { "CHECKPOINT": { "lat": 22.2, "lng": 114.3 } },
+                    { "CHECKPOINT": { "lat": 22.2, "lng": 114.4 } },
+                    { "CHECKPOINT": { "lat": 22.3, "lng": 114.0 } },
+                    { "CHECKPOINT": { "lat": 22.3, "lng": 114.1 } },
+                    { "CHECKPOINT_ACTIVE": { "lat": 22.3, "lng": 114.2 } },
+                    { "CHECKPOINT": { "lat": 22.3, "lng": 114.3 } },
+                    { "CHECKPOINT": { "lat": 22.3, "lng": 114.4 } },
+                    { "CHECKPOINT": { "lat": 22.4, "lng": 114.0 } },
+                    { "CHECKPOINT_ACTIVE": { "lat": 22.4, "lng": 114.1 } },
+                    { "CHECKPOINT": { "lat": 22.4, "lng": 114.2 } },
+                    { "CHECKPOINT": { "lat": 22.4, "lng": 114.3 } },
+                    { "CHECKPOINT": { "lat": 22.4, "lng": 114.4 } }
                 ]
             };
-            
+
             // Override with URL data if provided
             if (dataParam) {
                 try {
@@ -215,29 +217,29 @@
                     console.error("Error parsing URL data:", e);
                 }
             }
-            
+
             // Initialize map
             const map = L.map('map').setView([22.2, 114.2], 13);
-            
+
             // Define tile layers
             const lightNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
                 subdomains: 'abcd',
                 maxZoom: 20
             });
-            
+
             const standardTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 19
             });
-            
+
             // Set initial tile layer based on parameter
             if (mapData.tiles === "noLabelsLightTheme") {
                 lightNoLabels.addTo(map);
             } else {
                 standardTiles.addTo(map);
             }
-            
+
             // Create custom icons
             const icons = {
                 USER: L.icon({
@@ -283,7 +285,7 @@
                     popupAnchor: [0, -12]
                 })
             };
-            
+
             // Set legend icons
             document.getElementById('user-icon').style.backgroundImage = "url('圖庫/User.png')";
             document.getElementById('checkpoint-icon').style.backgroundImage = "url('圖庫/Checkpoint.png')";
@@ -292,33 +294,33 @@
             document.getElementById('for-teen-icon').style.backgroundImage = "url('圖庫/ForTeenOnly.png')";
             document.getElementById('for-poor-icon').style.backgroundImage = "url('圖庫/ForPoorOnly.png')";
             document.getElementById('for-elderly-icon').style.backgroundImage = "url('圖庫/ForElderlyOnly.png')";
-            
+
             // Add markers to the map
             mapData.geoinfo.forEach(item => {
                 const type = Object.keys(item)[0];
                 const coords = item[type];
-                
+
                 const icon = icons[type] || icons.CHECKPOINT;
-                
+
                 const marker = L.marker([coords.lat, coords.lng], { icon: icon })
                     .addTo(map)
                     .bindPopup(`<b>${type.replace(/_/g, ' ')}</b><br>Latitude: ${coords.lat}<br>Longitude: ${coords.lng}`);
             });
-            
+
             // Map controls
-            document.getElementById('zoom-in').addEventListener('click', function() {
+            document.getElementById('zoom-in').addEventListener('click', function () {
                 map.zoomIn();
             });
-            
-            document.getElementById('zoom-out').addEventListener('click', function() {
+
+            document.getElementById('zoom-out').addEventListener('click', function () {
                 map.zoomOut();
             });
-            
-            document.getElementById('reset-view').addEventListener('click', function() {
+
+            document.getElementById('reset-view').addEventListener('click', function () {
                 map.setView([22.2, 114.2], 13);
             });
-            
-            document.getElementById('toggle-labels').addEventListener('click', function() {
+
+            document.getElementById('toggle-labels').addEventListener('click', function () {
                 if (map.hasLayer(lightNoLabels)) {
                     map.removeLayer(lightNoLabels);
                     standardTiles.addTo(map);
@@ -330,4 +332,5 @@
         });
     </script>
 </body>
+
 </html>
