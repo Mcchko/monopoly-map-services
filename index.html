@@ -286,15 +286,6 @@
                 })
             };
 
-            // Set legend icons
-            document.getElementById('user-icon').style.backgroundImage = "url('圖庫/User.png')";
-            document.getElementById('checkpoint-icon').style.backgroundImage = "url('圖庫/Checkpoint.png')";
-            document.getElementById('checkpoint-active-icon').style.backgroundImage = "url('圖庫/CheckpointAvailable.png')";
-            document.getElementById('for-all-icon').style.backgroundImage = "url('圖庫/ForAll.png')";
-            document.getElementById('for-teen-icon').style.backgroundImage = "url('圖庫/ForTeenOnly.png')";
-            document.getElementById('for-poor-icon').style.backgroundImage = "url('圖庫/ForPoorOnly.png')";
-            document.getElementById('for-elderly-icon').style.backgroundImage = "url('圖庫/ForElderlyOnly.png')";
-
             // Add markers to the map
             mapData.geoinfo.forEach(item => {
                 const type = Object.keys(item)[0];
@@ -305,19 +296,6 @@
                 const marker = L.marker([coords.lat, coords.lng], { icon: icon })
                     .addTo(map)
                     .bindPopup(`<b>${type.replace(/_/g, ' ')}</b><br>Latitude: ${coords.lat}<br>Longitude: ${coords.lng}`);
-            });
-
-            // Map controls
-            document.getElementById('zoom-in').addEventListener('click', function () {
-                map.zoomIn();
-            });
-
-            document.getElementById('zoom-out').addEventListener('click', function () {
-                map.zoomOut();
-            });
-
-            document.getElementById('reset-view').addEventListener('click', function () {
-                map.setView([22.2, 114.2], 13);
             });
 
             document.getElementById('toggle-labels').addEventListener('click', function () {
