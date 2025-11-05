@@ -297,16 +297,6 @@
                     .addTo(map)
                     .bindPopup(`<b>${type.replace(/_/g, ' ')}</b><br>Latitude: ${coords.lat}<br>Longitude: ${coords.lng}`);
             });
-
-            document.getElementById('toggle-labels').addEventListener('click', function () {
-                if (map.hasLayer(lightNoLabels)) {
-                    map.removeLayer(lightNoLabels);
-                    standardTiles.addTo(map);
-                } else {
-                    map.removeLayer(standardTiles);
-                    lightNoLabels.addTo(map);
-                }
-            });
         });
     </script>
 </body>
